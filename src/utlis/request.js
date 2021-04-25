@@ -255,3 +255,34 @@ export const specsEdit = (form) => {
         data: qs.stringify(form)
     })
 }
+//=======商品管理=======
+// 添加
+export const goodsAdd = (form) => {
+    let obj = new FormData()
+    for (let i in form) {
+        obj.append(i, form[i])
+    }
+    return axios({
+        url: baseUrl + '/api/goodsadd',
+        method: 'post',
+        data: obj
+    })
+}
+// 列表
+export const goodsList = (form) => {
+    return axios({
+        url: baseUrl + '/api/goodslist',
+        method: "get",
+        params: form
+    })
+}
+// 获取一条信息
+export const goodsInfo = (id) => {
+    return axios({
+        url: baseUrl + '/api/goodsinfo',
+        method: 'get',
+        params: {
+            id: id
+        }
+    })
+}

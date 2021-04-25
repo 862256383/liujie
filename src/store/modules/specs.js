@@ -17,8 +17,9 @@ const mutations = {
     }
 }
 const actions = {
-    reqChangeList(context) {
-        specsList({ size: context.state.size, page: context.state.page }).then(res => {
+    reqChangeList(context, bool) {
+        let obj = bool ? {} : { size: context.state.size, page: context.state.page }
+        specsList(obj).then(res => {
             let list = res.data.list ? res.data.list : []
             if (list.length == 0 && context.state.page > 1) {
                 context.commit('changePage', context.state.page - 1)
