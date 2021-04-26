@@ -39,17 +39,25 @@
           <template slot-scope="scope">
             <div>
               <el-button type="primary" @click="edit(scope.row.id)">编辑</el-button>
-              <el-button type="danger">删除</el-button>
+              <el-button type="danger" @click="del(scope.row.id)">删除</el-button>
             </div>
           </template>
         </el-table-column>
       </el-table>
     </template>
-    <el-pagination background layout="prev, pager, next" :total="1000"></el-pagination>
+    <el-pagination
+      background
+      layout="prev, pager, next"
+      :total="count"
+      :page-size="size"
+      @current-change="changePage"
+    ></el-pagination>
   </div>
 </template>
 <script>
 import { mapGetters, mapActions } from "vuex";
+import { goodsDel } from "../../../utlis/request.js";
+import { success, warning } from "../../../utlis/alert.js";
 export default {
   props: [],
   components: {},
@@ -59,18 +67,37 @@ export default {
   computed: {
     ...mapGetters({
       goodsList: "goods/list",
+      size: "goods/size",
+      count: "goods/count",
     }),
   },
   methods: {
     ...mapActions({
       reqChangeList: "goods/reqChangeList",
+      reqChangeCount: "goods/reqChangeCount",
+      reqChangePage: "goods/reqChangePage",
     }),
     edit(id) {
       this.$emit("edit", id);
     },
+    del(id) {
+      goodsDel(id).then((res) => {
+        if (res.data.code == 200) {
+          success(res.data.msg);
+          this.reqChangeList();
+          this.reqChangeCount();
+        } else {
+          warning(res.data.msg);
+        }
+      });
+    },
+    changePage(e) {
+      this.reqChangePage(e);
+    },
   },
   mounted() {
-    this.reqChangeList();
+    this.reqChangePage(1);
+    this.reqChangeCount();
   },
 };
 </script>

@@ -1,20 +1,11 @@
 <template>
-  <div>
-    这是member
-    <v-list></v-list>
-    <v-add></v-add>
-  </div>
+  <div>add</div>
 </template>
 <script>
 import { mapGetters, mapActions } from "vuex";
-import vAdd from "./componentc/add.vue";
-import vList from "./componentc/list.vue";
 export default {
   props: [],
-  components: {
-    vAdd,
-    vList,
-  },
+  components: {},
   data() {
     return {};
   },

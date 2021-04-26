@@ -156,6 +156,14 @@ export const manageCount = () => {
         method: 'get'
     })
 }
+// 登录
+export const login = (form) => {
+    return axios({
+        url: baseUrl + '/api/userlogin',
+        method:'post',
+        data:qs.stringify(form)
+    })
+}
 // 商品分类管理
 // 列表
 export const cateList = (form) => {
@@ -284,5 +292,35 @@ export const goodsInfo = (id) => {
         params: {
             id: id
         }
+    })
+}
+// 编辑
+export const goodsEdit = (form) => {
+    let obj = new FormData()
+    for (let i in form) {
+        obj.append(i, form[i])
+    }
+    return axios({
+        url: baseUrl + '/api/goodsedit',
+        method: 'post',
+        data: obj
+    })
+}
+// 删除
+export const goodsDel = (id) => {
+    return axios({
+        url: baseUrl + '/api/goodsdelete',
+        method: 'post',
+        data: qs.stringify({
+            id: id
+        })
+    })
+}
+//商品总数(计算分页)
+export const goodsCount = (form) => {
+    return axios({
+        url: baseUrl + '/api/goodscount',
+        method: 'get',
+        data: qs.stringify(form)
     })
 }

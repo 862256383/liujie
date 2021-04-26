@@ -1,7 +1,13 @@
 
 <template>
   <div>
-    <el-dialog :title="obj.isAdd?'添加商品':'编辑商品'" :visible.sync="obj.isTrue" width="50%">
+    <el-dialog
+      :title="obj.isAdd?'添加商品':'编辑商品'"
+      :visible.sync="obj.isTrue"
+      width="50%"
+      @close="cancel"
+      @opened="opened1"
+    >
       <el-form ref="form" :model="form" label-width="80px">
         <el-form-item label="一级分类">
           <el-select v-model="form.first_cateid" placeholder="请选择" @change="second1">
@@ -80,21 +86,27 @@
         </el-form-item>
 
         <el-form-item label="商品描述">
-          <textarea v-model="form.description" cols="30" rows="10"></textarea>
+          <div id="box" v-if="obj.isTrue"></div>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancel">取 消</el-button>
         <el-button type="primary" @click="submit" v-if="obj.isAdd">添 加</el-button>
-        <el-button type="primary" v-else>编 辑</el-button>
+        <el-button type="primary" v-else @click="edit">编 辑</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { cateList, goodsAdd, goodsInfo } from "../../../utlis/request.js";
+import {
+  cateList,
+  goodsAdd,
+  goodsInfo,
+  goodsEdit,
+} from "../../../utlis/request.js";
 import { success, warning } from "../../../utlis/alert.js";
+import E from "wangeditor";
 export default {
   props: ["obj"],
   components: {},
@@ -130,33 +142,36 @@ export default {
       reqChangeCateList: "cate/reqChangeList",
       reqChangeSpecsList: "specs/reqChangeList",
       reqChangeList: "goods/reqChangeList",
+      reqChangeCount: "goods/reqChangeCount",
     }),
     second1() {
       cateList({ pid: this.form.first_cateid }).then((res) => {
         if (res.data.code == 200) {
-          this.cateSecond = res.data.list;
           this.form.second_cateid = "";
+          this.cateSecond = res.data.list;
         }
       });
-    },
-    second2() {
-      let arr = this.specsList.find((item) => item.id == this.form.specsid);
-      this.specsSecond = arr.attrs;
-      this.form.specsattr = "";
     },
     changeImg(e) {
       let files = e.target.files[0];
       this.imgUrl = URL.createObjectURL(files);
       this.form.img = files;
     },
+    second2() {
+      this.form.specsattr = [];
+      let arr = this.specsList.find((item) => item.id == this.form.specsid);
+      this.specsSecond = arr.attrs;
+    },
+
     submit() {
       this.form.specsattr = JSON.stringify(this.form.specsattr);
-      //   console.log(this.form);
+    this.form.description = this.editor.txt.html()
       goodsAdd(this.form).then((res) => {
         if (res.data.code == 200) {
           success(res.data.msg);
           this.cancel();
           this.reqChangeList();
+          this.reqChangeCount();
         } else {
           warning(res.data.msg);
         }
@@ -187,12 +202,34 @@ export default {
         this.form = res.data.list;
         cateList({ pid: this.form.first_cateid }).then((res) => {
           this.cateSecond = res.data.list;
-          this.imgUrl = this.$imgUrl + this.form.img;
         });
+        this.imgUrl = this.$imgUrl + this.form.img;
+        this.form.specsattr = JSON.parse(this.form.specsattr);
         let arr = this.specsList.find((item) => item.id == this.form.specsid);
         this.specsSecond = arr.attrs;
-        this.form.specsattr = this.specsSecond;
+        this.form.id = id;
       });
+    },
+    edit() {
+      this.form.description = this.editor.txt.html()
+      let data = {
+        ...this.form,
+        specsattr: JSON.stringify(this.form.specsattr),
+      };
+      goodsEdit(data).then((res) => {
+        if (res.data.code == 200) {
+          success(res.data.msg);
+          this.cancel();
+          this.reqChangeList();
+        } else {
+          warning(res.data.msg);
+        }
+      });
+    },
+    opened1() {
+      this.editor = new E("#box");
+      this.editor.create();
+      this.editor.txt.html(this.form.description)
     },
   },
   mounted() {
