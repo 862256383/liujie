@@ -160,8 +160,8 @@ export const manageCount = () => {
 export const login = (form) => {
     return axios({
         url: baseUrl + '/api/userlogin',
-        method:'post',
-        data:qs.stringify(form)
+        method: 'post',
+        data: qs.stringify(form)
     })
 }
 // 商品分类管理
@@ -322,5 +322,99 @@ export const goodsCount = (form) => {
         url: baseUrl + '/api/goodscount',
         method: 'get',
         data: qs.stringify(form)
+    })
+}
+// 会员管理
+// 列表
+export const memberList = () => {
+    return axios({
+        url: baseUrl + '/api/memberlist',
+        method: 'get',
+    })
+}
+//添加
+export const memberAdd = (form) => {
+    return axios({
+        url: baseUrl + '/api/memberedit',
+        method: 'post',
+        data: qs.stringify(form)
+    })
+}
+// 获取一条信息
+export const memberInfo = (uid) => {
+    return axios({
+        url: baseUrl + '/api/memberinfo',
+        method: 'get',
+        params: {
+            uid
+        }
+    })
+}
+// 编辑
+export const memberEdit = (form) => {
+    return axios({
+        url: baseUrl + '/api/memberedit',
+        method: 'post',
+        data: qs.stringify(form)
+    })
+}
+
+// 轮播图管理
+// 编辑
+export const bannerEdit = (form) => {
+    let obj = new FormData()
+    for (let i in form) {
+        obj.append(i, form[i])
+    }
+    return axios({
+        url: baseUrl + '/api/banneredit',
+        method: 'post',
+        data: obj
+    })
+}
+// 列表
+export const bannerList = () => {
+    return axios({
+        url: baseUrl + '/api/bannerlist',
+        method: 'get'
+    })
+}
+// 获取一条信息
+export const bannerInfo = (id) => {
+    return axios({
+        url: baseUrl + '/api/bannerinfo',
+        method: 'get',
+        params: id
+    })
+}
+// 添加
+export const bannerAdd = (form) => {
+    let obj = new FormData()
+    for (let i in form) {
+        obj.append(i, form[i])
+    }
+    return axios({
+        url: baseUrl + '/api/banneradd',
+        method: 'post',
+        data: obj
+    })
+}
+// 删除
+export const bannerDel = (id) => {
+    return axios({
+        url: baseUrl + '/api/bannerdelete',
+        method: 'post',
+        data: qs.stringify(id)
+    })
+}
+// 限时秒杀管理
+// 一级分类
+export const FistCateId = (fid) => {
+    return axios({
+        url: baseUrl + '/api/goodslist',
+        method: 'get',
+        params: {
+            fid: fid
+        }
     })
 }

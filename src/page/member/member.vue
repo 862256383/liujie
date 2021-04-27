@@ -1,6 +1,6 @@
 <template>
   <div>
-    这是member
+    
     <v-list></v-list>
     <v-add></v-add>
   </div>

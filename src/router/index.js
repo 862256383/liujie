@@ -14,9 +14,9 @@ function changeEnter(path,next){
 export const secondRouter = [
   {
     path: 'banner',
-    name:'banner',
+    name:'轮播图管理',
     beforeEnter: (to, from, next) => {
-      changeEnter('/cate',next)
+      changeEnter('/banner',next)
     },
     component: () => import('../page/banner/banner.vue')
   },{

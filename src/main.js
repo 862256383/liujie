@@ -3,7 +3,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 
-
+Vue.prototype.Event = new Vue()
 // reset.css
 import './assets/css/reset.css'
 //公共组件
