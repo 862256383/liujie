@@ -4,13 +4,13 @@ import Vue from 'vue'
 import store from '../store/index.js'
 
 
-// 开发环境
-let baseUrl = '/api'
-Vue.prototype.$imgUrl = 'http://localhost:3000'
+// // 开发环境
+// let baseUrl = '/api'
+// Vue.prototype.$imgUrl = 'http://localhost:3000'
 
 // 上线环境
-// let baseUrl = ''
-// Vue.prototype.$imgUrl = ''
+let baseUrl = ''
+Vue.prototype.$imgUrl = ''
 
 // 请求拦截
 axios.interceptors.request.use(config => {

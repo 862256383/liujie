@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-dialog
-      :title="obj.isAdd?'添加秒杀':'编辑秒杀'"
+      :title="obj.isAdd ? '添加秒杀' : '编辑秒杀'"
       :visible.sync="obj.isTrue"
       width="50%"
       @close="cancel"
@@ -23,8 +23,11 @@
         </div>
         <!-- 一级分类 -->
         <el-form-item label="一级分类">
-          <el-select @change="change1" v-model="form.first_cateid" placeholder="请选择一级分类">
-            <!-- <el-option label="请选择" value="shanghai"></el-option> -->
+          <el-select
+            @change="change1"
+            v-model="form.first_cateid"
+            placeholder="请选择一级分类"
+          >
             <el-option
               v-for="item in cateList"
               :key="item.id"
@@ -35,8 +38,11 @@
         </el-form-item>
         <!-- 二级分类 -->
         <el-form-item label="二级分类">
-          <el-select @change="change2" v-model="form.second_cateid" placeholder="请选择活动区域">
-            <!-- <el-option label="请选择" value="shanghai"></el-option> -->
+          <el-select
+            @change="change2"
+            v-model="form.second_cateid"
+            placeholder="请选择活动区域"
+          >
             <el-option
               v-for="item in second"
               :key="item.id"
@@ -47,7 +53,6 @@
         </el-form-item>
         <el-form-item label="商品">
           <el-select v-model="form.goodsid" placeholder="请选择商品">
-            <!-- <el-option label="请选择" value="shanghai"></el-option> -->
             <el-option
               v-for="item in threeLive"
               :key="item.id"
@@ -58,12 +63,18 @@
         </el-form-item>
 
         <el-form-item label="状态">
-          <el-switch v-model="form.status" :active-value="1" :inactive-value="2"></el-switch>
+          <el-switch
+            v-model="form.status"
+            :active-value="1"
+            :inactive-value="2"
+          ></el-switch>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancel">取 消</el-button>
-        <el-button type="primary" v-if="obj.isAdd" @click="submit">添 加</el-button>
+        <el-button type="primary" v-if="obj.isAdd" @click="submit"
+          >添 加</el-button
+        >
         <el-button type="primary" v-else @click="edit">编 辑</el-button>
       </span>
     </el-dialog>
