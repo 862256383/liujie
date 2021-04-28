@@ -1,11 +1,26 @@
 import axios from 'axios'
 import qs from 'qs'
 import Vue from 'vue'
+import store from '../store/index.js'
+
+
+// 开发环境
 let baseUrl = '/api'
 Vue.prototype.$imgUrl = 'http://localhost:3000'
+
+// 上线环境
 // let baseUrl = ''
 // Vue.prototype.$imgUrl = ''
 
+// 请求拦截
+axios.interceptors.request.use(config => {
+    if (config.url != baseUrl + 'api/userlogin') {
+        config.headers.authorization = store.state.info.token
+    }
+    return config
+})
+
+// 相应拦截
 axios.interceptors.response.use(res => {
     console.log('===拦截开始===');
     console.log(res);
@@ -408,13 +423,36 @@ export const bannerDel = (id) => {
     })
 }
 // 限时秒杀管理
-// 一级分类
-export const FistCateId = (fid) => {
+// 添加
+export const seckillAdd = (form) => {
     return axios({
-        url: baseUrl + '/api/goodslist',
+        url: baseUrl + "/api/seckadd",
+        method: 'post',
+        data: qs.stringify(form)
+    })
+}
+// 列表
+export const seckillList = () => {
+    return axios({
+        url: baseUrl + '/api/secklist',
+        method: 'get'
+    })
+}
+// 获取一条信息
+export const sexkillInfo = (id) => {
+    return axios({
+        url: baseUrl + '/api/seckinfo',
         method: 'get',
         params: {
-            fid: fid
+            id: id
         }
+    })
+}
+// 编辑
+export const seckillEdit = (form) => {
+    return axios({
+        url: baseUrl + '/api/seckedit',
+        method: 'post',
+        data: qs.stringify(form)
     })
 }

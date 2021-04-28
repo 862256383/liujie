@@ -1,30 +1,43 @@
 <template>
-<div>
-      <el-button type="primary">添加</el-button>
-      <v-list></v-list>
-      <v-add></v-add>
-</div>
+  <div>
+    <el-button type="primary" @click="add">添加</el-button>
+    <v-list @edit="edit"></v-list>
+    <v-add :obj="obj" ref="pink"></v-add>
+  </div>
 </template>
 <script>
-import {mapGetters,mapActions} from 'vuex';
-import vList from './components/list.vue'
-import vAdd from './components/add.vue'
+import { mapGetters, mapActions } from "vuex";
+import vList from "./components/list.vue";
+import vAdd from "./components/add.vue";
 export default {
-props: [],
-components: {
+  props: [],
+  components: {
     vList,
-    vAdd
-},
-data() {
-return {};
-},
-computed: {
-...mapGetters({}),
-},
-methods: {
-...mapActions({}),
-},
-mounted() {},
+    vAdd,
+  },
+  data() {
+    return {
+      obj: {
+        isTrue: false,
+        isAdd: false,
+      },
+    };
+  },
+  computed: {
+    ...mapGetters({}),
+  },
+  methods: {
+    ...mapActions({}),
+    add() {
+      (this.obj.isTrue = true), (this.obj.isAdd = true);
+    },
+    edit(id){
+        this.obj.isTrue = true,
+        this.obj.isAdd = false,
+        this.$refs.pink.getOne(id)
+    }
+  },
+  mounted() {},
 };
 </script>
 <style scoped>
